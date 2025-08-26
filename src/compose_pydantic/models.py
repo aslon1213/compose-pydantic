@@ -5,14 +5,14 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any, Dict, List, Optional, Union
+from typing import Annotated, Any, Dict, List, Optional, Union
 
-from pydantic import BaseModel, Extra, Field, conint, constr
+from pydantic import BaseModel, Field, StringConstraints
 
 
 class Config1(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     source: Optional[str] = None
     target: Optional[str] = None
@@ -23,7 +23,7 @@ class Config1(BaseModel):
 
 class CredentialSpec(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     config: Optional[str] = None
     file: Optional[str] = None
@@ -31,21 +31,21 @@ class CredentialSpec(BaseModel):
 
 
 class Condition(Enum):
-    service_started = 'service_started'
-    service_healthy = 'service_healthy'
-    service_completed_successfully = 'service_completed_successfully'
+    service_started = "service_started"
+    service_healthy = "service_healthy"
+    service_completed_successfully = "service_completed_successfully"
 
 
 class DependsOn(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     condition: Condition
 
 
 class Extend(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     service: str
     file: Optional[str] = None
@@ -53,15 +53,20 @@ class Extend(BaseModel):
 
 class Logging(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     driver: Optional[str] = None
-    options: Optional[Dict[constr(regex=r'^.+$'), Optional[Union[str, float]]]] = None
+    options: Optional[
+        Dict[
+            Annotated[str, StringConstraints(pattern=r"^.+$")],
+            Optional[Union[str, float]],
+        ]
+    ] = None
 
 
 class Port(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     mode: Optional[str] = None
     host_ip: Optional[str] = None
@@ -71,16 +76,16 @@ class Port(BaseModel):
 
 
 class PullPolicy(Enum):
-    always = 'always'
-    never = 'never'
-    if_not_present = 'if_not_present'
-    build = 'build'
-    missing = 'missing'
+    always = "always"
+    never = "never"
+    if_not_present = "if_not_present"
+    build = "build"
+    missing = "missing"
 
 
 class Secret1(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     source: Optional[str] = None
     target: Optional[str] = None
@@ -91,20 +96,20 @@ class Secret1(BaseModel):
 
 class Ulimit(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     hard: int
     soft: int
 
 
 class Selinux(Enum):
-    z = 'z'
-    Z = 'Z'
+    z = "z"
+    Z = "Z"
 
 
 class Bind(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     propagation: Optional[str] = None
     create_host_path: Optional[bool] = None
@@ -113,21 +118,21 @@ class Bind(BaseModel):
 
 class Volume2(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     nocopy: Optional[bool] = None
 
 
 class Tmpfs(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
-    size: Optional[Union[conint(ge=0), str]] = None
+    size: Optional[Union[Annotated[int, Field(ge=0)], str]] = None
 
 
 class Volume1(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     type: str
     source: Optional[str] = None
@@ -141,7 +146,7 @@ class Volume1(BaseModel):
 
 class Healthcheck(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     disable: Optional[bool] = None
     interval: Optional[str] = None
@@ -152,13 +157,13 @@ class Healthcheck(BaseModel):
 
 
 class Order(Enum):
-    start_first = 'start-first'
-    stop_first = 'stop-first'
+    start_first = "start-first"
+    stop_first = "stop-first"
 
 
 class RollbackConfig(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     parallelism: Optional[int] = None
     delay: Optional[str] = None
@@ -169,13 +174,13 @@ class RollbackConfig(BaseModel):
 
 
 class Order1(Enum):
-    start_first = 'start-first'
-    stop_first = 'stop-first'
+    start_first = "start-first"
+    stop_first = "stop-first"
 
 
 class UpdateConfig(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     parallelism: Optional[int] = None
     delay: Optional[str] = None
@@ -187,7 +192,7 @@ class UpdateConfig(BaseModel):
 
 class Limits(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     cpus: Optional[Union[float, str]] = None
     memory: Optional[str] = None
@@ -196,7 +201,7 @@ class Limits(BaseModel):
 
 class RestartPolicy(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     condition: Optional[str] = None
     delay: Optional[str] = None
@@ -206,14 +211,14 @@ class RestartPolicy(BaseModel):
 
 class Preference(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     spread: Optional[str] = None
 
 
 class Placement(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     constraints: Optional[List[str]] = None
     preferences: Optional[List[Preference]] = None
@@ -222,7 +227,7 @@ class Placement(BaseModel):
 
 class DiscreteResourceSpec(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     kind: Optional[str] = None
     value: Optional[float] = None
@@ -230,7 +235,7 @@ class DiscreteResourceSpec(BaseModel):
 
 class GenericResource(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     discrete_resource_spec: Optional[DiscreteResourceSpec] = None
 
@@ -241,33 +246,37 @@ class GenericResources(BaseModel):
 
 class ConfigItem(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     subnet: Optional[str] = None
     ip_range: Optional[str] = None
     gateway: Optional[str] = None
-    aux_addresses: Optional[Dict[constr(regex=r'^.+$'), str]] = None
+    aux_addresses: Optional[
+        Dict[Annotated[str, StringConstraints(pattern=r"^.+$")], str]
+    ] = None
 
 
 class Ipam(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     driver: Optional[str] = None
     config: Optional[List[ConfigItem]] = None
-    options: Optional[Dict[constr(regex=r'^.+$'), str]] = None
+    options: Optional[Dict[Annotated[str, StringConstraints(pattern=r"^.+$")], str]] = (
+        None
+    )
 
 
 class External(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     name: Optional[str] = None
 
 
 class External1(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     name: Optional[str] = None
 
@@ -286,13 +295,17 @@ class ListOfStrings(BaseModel):
 
 class ListOrDict(BaseModel):
     __root__: Union[
-        Dict[constr(regex=r'.+'), Optional[Union[str, float, bool]]], List[str]
+        Dict[
+            Annotated[str, StringConstraints(pattern=r".+")],
+            Optional[Union[str, float, bool]],
+        ],
+        List[str],
     ]
 
 
 class BlkioLimit(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     path: Optional[str] = None
     rate: Optional[Union[int, str]] = None
@@ -300,7 +313,7 @@ class BlkioLimit(BaseModel):
 
 class BlkioWeight(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     path: Optional[str] = None
     weight: Optional[int] = None
@@ -312,7 +325,7 @@ class Constraints(BaseModel):
 
 class BuildItem(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     context: Optional[str] = None
     dockerfile: Optional[str] = None
@@ -330,7 +343,7 @@ class BuildItem(BaseModel):
 
 class BlkioConfig(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     device_read_bps: Optional[List[BlkioLimit]] = None
     device_read_iops: Optional[List[BlkioLimit]] = None
@@ -342,7 +355,7 @@ class BlkioConfig(BaseModel):
 
 class Network1(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     aliases: Optional[ListOfStrings] = None
     ipv4_address: Optional[str] = None
@@ -353,7 +366,7 @@ class Network1(BaseModel):
 
 class Device(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     capabilities: Optional[ListOfStrings] = None
     count: Optional[Union[str, int]] = None
@@ -368,11 +381,13 @@ class Devices(BaseModel):
 
 class Network(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     name: Optional[str] = None
     driver: Optional[str] = None
-    driver_opts: Optional[Dict[constr(regex=r'^.+$'), Union[str, float]]] = None
+    driver_opts: Optional[
+        Dict[Annotated[str, StringConstraints(pattern=r"^.+$")], Union[str, float]]
+    ] = None
     ipam: Optional[Ipam] = None
     external: Optional[External] = None
     internal: Optional[bool] = None
@@ -383,31 +398,35 @@ class Network(BaseModel):
 
 class Volume(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     name: Optional[str] = None
     driver: Optional[str] = None
-    driver_opts: Optional[Dict[constr(regex=r'^.+$'), Union[str, float]]] = None
+    driver_opts: Optional[
+        Dict[Annotated[str, StringConstraints(pattern=r"^.+$")], Union[str, float]]
+    ] = None
     external: Optional[External1] = None
     labels: Optional[ListOrDict] = None
 
 
 class Secret(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     name: Optional[str] = None
     file: Optional[str] = None
     external: Optional[External2] = None
     labels: Optional[ListOrDict] = None
     driver: Optional[str] = None
-    driver_opts: Optional[Dict[constr(regex=r'^.+$'), Union[str, float]]] = None
+    driver_opts: Optional[
+        Dict[Annotated[str, StringConstraints(pattern=r"^.+$")], Union[str, float]]
+    ] = None
     template_driver: Optional[str] = None
 
 
 class Config(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     name: Optional[str] = None
     file: Optional[str] = None
@@ -422,7 +441,7 @@ class StringOrList(BaseModel):
 
 class Reservations(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     cpus: Optional[Union[float, str]] = None
     memory: Optional[str] = None
@@ -432,7 +451,7 @@ class Reservations(BaseModel):
 
 class Resources(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     limits: Optional[Limits] = None
     reservations: Optional[Reservations] = None
@@ -440,7 +459,7 @@ class Resources(BaseModel):
 
 class Deployment(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     mode: Optional[str] = None
     endpoint_mode: Optional[str] = None
@@ -455,7 +474,7 @@ class Deployment(BaseModel):
 
 class Service(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     deploy: Optional[Deployment] = None
     build: Optional[Union[str, BuildItem]] = None
@@ -466,8 +485,8 @@ class Service(BaseModel):
     command: Optional[Union[str, List[str]]] = None
     configs: Optional[List[Union[str, Config1]]] = None
     container_name: Optional[str] = None
-    cpu_count: Optional[conint(ge=0)] = None
-    cpu_percent: Optional[conint(ge=0, le=100)] = None
+    cpu_count: Optional[Annotated[int, Field(ge=0)]] = None
+    cpu_percent: Optional[Annotated[int, Field(ge=0, le=100)]] = None
     cpu_shares: Optional[Union[float, str]] = None
     cpu_quota: Optional[Union[float, str]] = None
     cpu_period: Optional[Union[float, str]] = None
@@ -477,7 +496,13 @@ class Service(BaseModel):
     cpuset: Optional[str] = None
     credential_spec: Optional[CredentialSpec] = None
     depends_on: Optional[
-        Union[ListOfStrings, Dict[constr(regex=r'^[a-zA-Z0-9._-]+$'), DependsOn]]
+        Union[
+            ListOfStrings,
+            Dict[
+                Annotated[str, StringConstraints(pattern=r"^[a-zA-Z0-9._-]+$")],
+                DependsOn,
+            ],
+        ]
     ] = None
     device_cgroup_rules: Optional[ListOfStrings] = None
     devices: Optional[List[str]] = None
@@ -510,11 +535,15 @@ class Service(BaseModel):
     network_mode: Optional[str] = None
     networks: Optional[
         Union[
-            ListOfStrings, Dict[constr(regex=r'^[a-zA-Z0-9._-]+$'), Optional[Network1]]
+            ListOfStrings,
+            Dict[
+                Annotated[str, StringConstraints(pattern=r"^[a-zA-Z0-9._-]+$")],
+                Optional[Network1],
+            ],
         ]
     ] = None
     oom_kill_disable: Optional[bool] = None
-    oom_score_adj: Optional[conint(ge=-1000, le=1000)] = None
+    oom_score_adj: Optional[Annotated[int, Field(ge=-1000, le=1000)]] = None
     pid: Optional[Optional[str]] = None
     pids_limit: Optional[Union[float, str]] = None
     platform: Optional[str] = None
@@ -536,7 +565,9 @@ class Service(BaseModel):
     storage_opt: Optional[Dict[str, Any]] = None
     tmpfs: Optional[StringOrList] = None
     tty: Optional[bool] = None
-    ulimits: Optional[Dict[constr(regex=r'^[a-z]+$'), Union[int, Ulimit]]] = None
+    ulimits: Optional[
+        Dict[Annotated[str, StringConstraints(pattern=r"^[a-z]+$")], Union[int, Ulimit]]
+    ] = None
     user: Optional[str] = None
     userns_mode: Optional[str] = None
     volumes: Optional[List[Union[str, Volume1]]] = None
@@ -546,17 +577,27 @@ class Service(BaseModel):
 
 class ComposeSpecification(BaseModel):
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
 
     version: Optional[str] = Field(
-        None, description='declared for backward compatibility, ignored.'
+        None, description="declared for backward compatibility, ignored."
     )
     name: Optional[str] = Field(
         None,
-        description='define the Compose project name, until user defines one explicitly.',
+        description="define the Compose project name, until user defines one explicitly.",
     )
-    services: Optional[Dict[constr(regex=r'^[a-zA-Z0-9._-]+$'), Service]] = None
-    networks: Optional[Dict[constr(regex=r'^[a-zA-Z0-9._-]+$'), Network]] = None
-    volumes: Optional[Dict[constr(regex=r'^[a-zA-Z0-9._-]+$'), Volume]] = None
-    secrets: Optional[Dict[constr(regex=r'^[a-zA-Z0-9._-]+$'), Secret]] = None
-    configs: Optional[Dict[constr(regex=r'^[a-zA-Z0-9._-]+$'), Config]] = None
+    services: Optional[
+        Dict[Annotated[str, StringConstraints(pattern=r"^[a-zA-Z0-9._-]+$")], Service]
+    ] = None
+    networks: Optional[
+        Dict[Annotated[str, StringConstraints(pattern=r"^[a-zA-Z0-9._-]+$")], Network]
+    ] = None
+    volumes: Optional[
+        Dict[Annotated[str, StringConstraints(pattern=r"^[a-zA-Z0-9._-]+$")], Volume]
+    ] = None
+    secrets: Optional[
+        Dict[Annotated[str, StringConstraints(pattern=r"^[a-zA-Z0-9._-]+$")], Secret]
+    ] = None
+    configs: Optional[
+        Dict[Annotated[str, StringConstraints(pattern=r"^[a-zA-Z0-9._-]+$")], Config]
+    ] = None
