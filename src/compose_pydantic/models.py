@@ -7,12 +7,11 @@ from __future__ import annotations
 from enum import Enum
 from typing import Annotated, Any, Dict, List, Optional, Union
 
-from pydantic import BaseModel, Field, StringConstraints
+from pydantic import BaseModel, Field, StringConstraints, RootModel, ConfigDict
 
 
 class Config1(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     source: Optional[str] = None
     target: Optional[str] = None
@@ -22,8 +21,7 @@ class Config1(BaseModel):
 
 
 class CredentialSpec(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     config: Optional[str] = None
     file: Optional[str] = None
@@ -37,23 +35,20 @@ class Condition(Enum):
 
 
 class DependsOn(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     condition: Condition
 
 
 class Extend(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     service: str
     file: Optional[str] = None
 
 
 class Logging(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     driver: Optional[str] = None
     options: Optional[
@@ -65,8 +60,7 @@ class Logging(BaseModel):
 
 
 class Port(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     mode: Optional[str] = None
     host_ip: Optional[str] = None
@@ -84,8 +78,7 @@ class PullPolicy(Enum):
 
 
 class Secret1(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     source: Optional[str] = None
     target: Optional[str] = None
@@ -95,8 +88,7 @@ class Secret1(BaseModel):
 
 
 class Ulimit(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     hard: int
     soft: int
@@ -108,8 +100,7 @@ class Selinux(Enum):
 
 
 class Bind(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     propagation: Optional[str] = None
     create_host_path: Optional[bool] = None
@@ -117,22 +108,19 @@ class Bind(BaseModel):
 
 
 class Volume2(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     nocopy: Optional[bool] = None
 
 
 class Tmpfs(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     size: Optional[Union[Annotated[int, Field(ge=0)], str]] = None
 
 
 class Volume1(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     type: str
     source: Optional[str] = None
@@ -145,8 +133,7 @@ class Volume1(BaseModel):
 
 
 class Healthcheck(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     disable: Optional[bool] = None
     interval: Optional[str] = None
@@ -162,8 +149,7 @@ class Order(Enum):
 
 
 class RollbackConfig(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     parallelism: Optional[int] = None
     delay: Optional[str] = None
@@ -179,8 +165,7 @@ class Order1(Enum):
 
 
 class UpdateConfig(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     parallelism: Optional[int] = None
     delay: Optional[str] = None
@@ -191,8 +176,7 @@ class UpdateConfig(BaseModel):
 
 
 class Limits(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     cpus: Optional[Union[float, str]] = None
     memory: Optional[str] = None
@@ -200,8 +184,7 @@ class Limits(BaseModel):
 
 
 class RestartPolicy(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     condition: Optional[str] = None
     delay: Optional[str] = None
@@ -210,15 +193,13 @@ class RestartPolicy(BaseModel):
 
 
 class Preference(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     spread: Optional[str] = None
 
 
 class Placement(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     constraints: Optional[List[str]] = None
     preferences: Optional[List[Preference]] = None
@@ -226,27 +207,24 @@ class Placement(BaseModel):
 
 
 class DiscreteResourceSpec(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     kind: Optional[str] = None
     value: Optional[float] = None
 
 
 class GenericResource(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     discrete_resource_spec: Optional[DiscreteResourceSpec] = None
 
 
-class GenericResources(BaseModel):
-    __root__: List[GenericResource]
+class GenericResources(RootModel):
+    root: List[GenericResource]
 
 
 class ConfigItem(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     subnet: Optional[str] = None
     ip_range: Optional[str] = None
@@ -257,8 +235,7 @@ class ConfigItem(BaseModel):
 
 
 class Ipam(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     driver: Optional[str] = None
     config: Optional[List[ConfigItem]] = None
@@ -268,15 +245,13 @@ class Ipam(BaseModel):
 
 
 class External(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     name: Optional[str] = None
 
 
 class External1(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     name: Optional[str] = None
 
@@ -289,12 +264,12 @@ class External3(BaseModel):
     name: Optional[str] = None
 
 
-class ListOfStrings(BaseModel):
-    __root__: List[str]
+class ListOfStrings(RootModel):
+    root: List[str]
 
 
-class ListOrDict(BaseModel):
-    __root__: Union[
+class ListOrDict(RootModel):
+    root: Union[
         Dict[
             Annotated[str, StringConstraints(pattern=r".+")],
             Optional[Union[str, float, bool]],
@@ -304,28 +279,25 @@ class ListOrDict(BaseModel):
 
 
 class BlkioLimit(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     path: Optional[str] = None
     rate: Optional[Union[int, str]] = None
 
 
 class BlkioWeight(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     path: Optional[str] = None
     weight: Optional[int] = None
 
 
-class Constraints(BaseModel):
-    __root__: Any
+class Constraints(RootModel):
+    root: Any
 
 
 class BuildItem(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     context: Optional[str] = None
     dockerfile: Optional[str] = None
@@ -342,8 +314,7 @@ class BuildItem(BaseModel):
 
 
 class BlkioConfig(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     device_read_bps: Optional[List[BlkioLimit]] = None
     device_read_iops: Optional[List[BlkioLimit]] = None
@@ -354,8 +325,7 @@ class BlkioConfig(BaseModel):
 
 
 class Network1(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     aliases: Optional[ListOfStrings] = None
     ipv4_address: Optional[str] = None
@@ -365,8 +335,7 @@ class Network1(BaseModel):
 
 
 class Device(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     capabilities: Optional[ListOfStrings] = None
     count: Optional[Union[str, int]] = None
@@ -375,13 +344,12 @@ class Device(BaseModel):
     options: Optional[ListOrDict] = None
 
 
-class Devices(BaseModel):
-    __root__: List[Device]
+class Devices(RootModel):
+    root: List[Device]
 
 
 class Network(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     name: Optional[str] = None
     driver: Optional[str] = None
@@ -397,8 +365,7 @@ class Network(BaseModel):
 
 
 class Volume(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     name: Optional[str] = None
     driver: Optional[str] = None
@@ -410,8 +377,7 @@ class Volume(BaseModel):
 
 
 class Secret(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     name: Optional[str] = None
     file: Optional[str] = None
@@ -425,8 +391,7 @@ class Secret(BaseModel):
 
 
 class Config(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     name: Optional[str] = None
     file: Optional[str] = None
@@ -435,13 +400,12 @@ class Config(BaseModel):
     template_driver: Optional[str] = None
 
 
-class StringOrList(BaseModel):
-    __root__: Union[str, ListOfStrings]
+class StringOrList(RootModel):
+    root: Union[str, ListOfStrings]
 
 
 class Reservations(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     cpus: Optional[Union[float, str]] = None
     memory: Optional[str] = None
@@ -450,16 +414,14 @@ class Reservations(BaseModel):
 
 
 class Resources(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     limits: Optional[Limits] = None
     reservations: Optional[Reservations] = None
 
 
 class Deployment(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     mode: Optional[str] = None
     endpoint_mode: Optional[str] = None
@@ -473,8 +435,7 @@ class Deployment(BaseModel):
 
 
 class Service(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     deploy: Optional[Deployment] = None
     build: Optional[Union[str, BuildItem]] = None
@@ -576,8 +537,7 @@ class Service(BaseModel):
 
 
 class ComposeSpecification(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     version: Optional[str] = Field(
         None, description="declared for backward compatibility, ignored."
